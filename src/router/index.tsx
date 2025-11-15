@@ -1,3 +1,5 @@
+// src/router/index.tsx
+
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import Dashboard from "../pages/Dashboard"
 // import Current from "../pages/Current"

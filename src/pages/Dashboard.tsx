@@ -1,18 +1,15 @@
+// src/pages/Dashboard.tsx
+
 import { useState } from 'react'
 import StatCard from '../components/ui/StatCard'
 
 interface DashboardData {
-    // Operations data
     arrivals: number
     departures: number
-
-    // Facilities data
     totalDevices: number
     counters: number
     gates: number
     belts: number
-
-    // Flights data
     totalFlights: number
     domestic: number
     international: number
@@ -31,7 +28,6 @@ const Dashboard = () => {
         international: 9
     })
 
-    // Flights section stats (Left Column)
     const flightsStats = [
         {
             title: 'Total Flights',
@@ -56,7 +52,6 @@ const Dashboard = () => {
         }
     ]
 
-    // Operations section stats (Middle Column)
     const operationsStats = [
         {
             title: 'Arrivals',
@@ -74,7 +69,6 @@ const Dashboard = () => {
         }
     ]
 
-    // Facilities section stats (Right Column)
     const facilitiesStats = [
         {
             title: 'Total Devices',
@@ -108,7 +102,6 @@ const Dashboard = () => {
 
     return (
         <div className="p-6 space-y-8">
-            {/* Header Section */}
             <div className="mb-8">
                 <h1 className="text-3xl font-bold text-gray-900 mb-2">Airport Operations</h1>
                 <p className="text-gray-600">
@@ -116,10 +109,8 @@ const Dashboard = () => {
                 </p>
             </div>
 
-            {/* Three Column Layout: Flights | Operations | Facilities */}
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
 
-                {/* Flights Column - Left */}
                 <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                     <div className="flex items-center mb-6">
                         <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center mr-3">
@@ -137,7 +128,6 @@ const Dashboard = () => {
                     </div>
                 </div>
 
-                {/* Operations Column - Middle */}
                 <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                     <div className="flex items-center mb-6">
                         <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center mr-3">
@@ -155,7 +145,6 @@ const Dashboard = () => {
                     </div>
                 </div>
 
-                {/* Facilities Column - Right */}
                 <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                     <div className="flex items-center mb-6">
                         <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center mr-3">
@@ -175,7 +164,6 @@ const Dashboard = () => {
 
             </div>
 
-            {/* Recent Activity Section */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200">
                 <div className="p-6">
                     <h2 className="text-xl font-semibold text-gray-900 mb-6">Recent Activity</h2>

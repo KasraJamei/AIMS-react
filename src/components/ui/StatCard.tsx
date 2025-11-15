@@ -1,3 +1,5 @@
+// src/components/ui/StatCard.tsx
+
 import { type ReactNode } from 'react'
 
 interface StatCardProps {
