@@ -86,7 +86,7 @@ const Header = ({ onToggleSidebar, isSidebarOpen }: HeaderProps) => {
                                         : 'opacity-0 scale-95 -translate-y-2 pointer-events-none'
                                     }`}
                             >
-                                <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4 border-b border-blue-800">
+                                <div className="bg-linear-to-rrom-blue-600 to-blue-700 px-6 py-4 border-b border-blue-800">
                                     <div className="flex items-center justify-between">
                                         <h3 className="text-lg font-bold text-white">About AIMS</h3>
                                         <button
@@ -102,8 +102,8 @@ const Header = ({ onToggleSidebar, isSidebarOpen }: HeaderProps) => {
 
                                 <div className="p-6">
                                     <div className="flex items-start space-x-4 mb-6">
-                                        <div className="flex-shrink-0">
-                                            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                                        <div className="shrink-0">
+                                            <div className="w-16 h-16 bg-linear-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
                                                 <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                                                 </svg>
@@ -122,7 +122,7 @@ const Header = ({ onToggleSidebar, isSidebarOpen }: HeaderProps) => {
                                                     <span className="text-gray-900 font-medium">3.3.10.0</span>
                                                 </div>
                                                 <div className="flex items-start">
-                                                    <span className="text-gray-500 w-20 flex-shrink-0">Copyright:</span>
+                                                    <span className="text-gray-500 w-20 shrink-0">Copyright:</span>
                                                     <span className="text-gray-900">(c) 2022 partodadeh Co.</span>
                                                 </div>
                                                 <div className="flex items-center">
@@ -172,7 +172,7 @@ const Header = ({ onToggleSidebar, isSidebarOpen }: HeaderProps) => {
                         <div className="h-6 w-px bg-gray-300 hidden md:block"></div>
 
                         <div className="flex items-center space-x-2 sm:space-x-3">
-                            <div className="w-9 h-9 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center cursor-pointer hover:shadow-lg transition-all">
+                            <div className="w-9 h-9 bg-linear-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center cursor-pointer hover:shadow-lg transition-all">
                                 <span className="text-white font-semibold text-sm">JD</span>
                             </div>
                             <div className="hidden md:block">
@@ -202,7 +202,7 @@ const Header = ({ onToggleSidebar, isSidebarOpen }: HeaderProps) => {
                             }`}
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-5 py-3 rounded-t-2xl">
+                        <div className="bg-linear-to-r from-blue-600 to-blue-700 px-5 py-3 rounded-t-2xl">
                             <div className="flex items-center justify-between">
                                 <h3 className="text-base font-bold text-white">About AIMS</h3>
                                 <button
@@ -218,8 +218,8 @@ const Header = ({ onToggleSidebar, isSidebarOpen }: HeaderProps) => {
 
                         <div className="p-5 max-h-[60vh] overflow-y-auto">
                             <div className="flex items-start space-x-3 mb-4">
-                                <div className="flex-shrink-0">
-                                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                                <div className="shrink-0">
+                                    <div className="w-12 h-12 bg-linear-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
                                         <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                                         </svg>
@@ -238,7 +238,7 @@ const Header = ({ onToggleSidebar, isSidebarOpen }: HeaderProps) => {
                                             <span className="text-gray-900 font-medium">3.3.10.0</span>
                                         </div>
                                         <div className="flex items-start">
-                                            <span className="text-gray-500 w-16 flex-shrink-0">Copyright:</span>
+                                            <span className="text-gray-500 w-16 shrink-0">Copyright:</span>
                                             <span className="text-gray-900">(c) 2022 partodadeh Co.</span>
                                         </div>
                                         <div className="flex items-center">

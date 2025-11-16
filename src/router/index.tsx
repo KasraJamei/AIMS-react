@@ -1,14 +1,11 @@
 // src/router/index.tsx
 
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import Dashboard from "../pages/Dashboard"
-// import Current from "../pages/Current"
-// import Schedule from "../pages/Schedule"
-// import Directory from "../pages/Directory"
-// import Enterprise from "../pages/Enterprise"
-// import Logs from "../pages/Logs"
-// import Reports from "../pages/Reports"
+import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom"
 import App from "../App"
+import Dashboard from "../pages/Dashboard"
+import CurrentDomestic from "../pages/CurrentDomestic"
+import CurrentInternational from "../pages/CurrentInternational"
+import CurrentAnnounce from "../pages/CurrentAnnounce"
 
 const router = createBrowserRouter([
     {
@@ -17,9 +14,30 @@ const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <Dashboard />
+                element: <Dashboard />,
             },
-            // { path: "current", element: <Current /> },
+            {
+                path: "current",
+                children: [
+                    {
+                        index: true,
+                        element: <Navigate to="/current/domestic" replace />,
+                    },
+                    {
+                        path: "domestic",
+                        element: <CurrentDomestic />,
+                    },
+                    {
+                        path: "international",
+                        element: <CurrentInternational />,
+                    },
+                    {
+                        path: "announce",
+                        element: <CurrentAnnounce />,
+                    },
+                ],
+            },
+            // all other sections disabled for now
             // { path: "schedule", element: <Schedule /> },
             // { path: "directory", element: <Directory /> },
             // { path: "enterprise", element: <Enterprise /> },
