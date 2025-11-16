@@ -25,10 +25,13 @@ apiClient.interceptors.request.use(
 )
 
 apiClient.interceptors.response.use(
-    (response: AxiosResponse) => response.data,
+    (response: AxiosResponse) => response,
     (error) => {
-        // برای دیباگ ببینیم چرا 404/401 می‌گیری
-        console.error('API error:', error.response?.status, error.response?.data)
+        console.error(
+            'API error:',
+            error.response?.status,
+            error.response?.data ?? error.message,
+        )
         return Promise.reject(error)
     },
 )

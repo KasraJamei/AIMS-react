@@ -15,9 +15,10 @@ const PAGE_SIZE = 20
 type SectionProps = {
     title: string
     baseParams: ActualSearchParams
+    showFilterDropdown?: boolean
 }
 
-const InternationalSection = ({ title, baseParams }: SectionProps) => {
+const InternationalSection = ({ title, baseParams, showFilterDropdown }: SectionProps) => {
     const [search, setSearch] = useState('')
     const [currentPage, setCurrentPage] = useState(1)
     const [settingsOpen, setSettingsOpen] = useState(false)
@@ -49,14 +50,19 @@ const InternationalSection = ({ title, baseParams }: SectionProps) => {
             a.download = `${title}-flights.xlsx`
             a.click()
             URL.revokeObjectURL(url)
-        } catch {
-            alert('Export excel failed')
+        } catch (err) {
+            console.error('Export excel failed:', err)
+            alert('Export excel failed. Please try again.')
         }
     }
 
     const handleAdd = () => setAddOpen(true)
     const handleSettings = () => setSettingsOpen(true)
-    const handleFilter = () => setFiltersOpen((prev) => !prev)
+
+    const handleFilter = () => {
+        if (!showFilterDropdown) return
+        setFiltersOpen((prev) => !prev)
+    }
 
     const handleAdvancedSearch = ({ startDate, endDate, flightNumber }: AdvancedSearchParams) => {
         setFiltersOpen(false)
@@ -65,7 +71,7 @@ const InternationalSection = ({ title, baseParams }: SectionProps) => {
 
     return (
         <div className="space-y-2">
-            {filtersOpen && (
+            {showFilterDropdown && filtersOpen && (
                 <div className="bg-white border border-slate-200 rounded-lg mb-1">
                     <AdvancedSearch open={true} onSearch={handleAdvancedSearch} />
                 </div>
@@ -108,10 +114,12 @@ const CurrentInternational = () => {
             <InternationalSection
                 title="International - Arrival"
                 baseParams={{ flightCategory: 'International', directionType: 'Arrival' }}
+                showFilterDropdown={true}
             />
             <InternationalSection
                 title="International - Departure"
                 baseParams={{ flightCategory: 'International', directionType: 'Departure' }}
+                showFilterDropdown={false}
             />
         </div>
     )

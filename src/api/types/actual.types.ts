@@ -34,8 +34,6 @@ export interface ActualFlight {
     registration?: string
     parkPosition?: string
     route?: string
-
-    // New fields (after parkPosition)
     via?: string
     internalRemark?: string
     visibility?: string
