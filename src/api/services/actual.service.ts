@@ -23,11 +23,4 @@ export const actualService = {
     delete: async (id: number): Promise<void> => {
         return apiClient.delete(`/api/v2/Actual/${id}`)
     },
-
-    exportExcel: async (params?: ActualSearchParams): Promise<Blob> => {
-        return apiClient.get('/api/v2/Actual/ExportExcel', {
-            params,
-            responseType: 'blob',
-        })
-    },
 }
