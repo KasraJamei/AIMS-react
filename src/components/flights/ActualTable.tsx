@@ -4,7 +4,7 @@ import type { ActualFlight } from '../../api/types/actual.types'
 
 const PAGE_SIZE = 20
 
-type Props = {
+export type ActualTableProps = {
     title: string
     search: string
     setSearch: (val: string) => void
@@ -14,8 +14,6 @@ type Props = {
     isLoading: boolean
     error: Error | null
     onDelete: (id: number) => void
-
-    // دکمه‌ها
     onSettings: () => void
     onAdd: () => void
     onExportExcel: () => void
@@ -28,6 +26,15 @@ const getBlinkColor = (blink?: string) => {
     if (blink === 'green') return 'bg-green-500'
     return 'bg-gray-400'
 }
+
+const headerButtonBase =
+    'inline-flex items-center justify-center px-4 py-2 rounded-full border text-xs font-medium transition-all duration-200 cursor-pointer select-none'
+const headerButtonNeutral =
+    headerButtonBase +
+    ' bg-white text-slate-700 border-slate-300 hover:bg-slate-50 hover:border-slate-400 hover:text-slate-900'
+const headerButtonPrimary =
+    headerButtonBase +
+    ' bg-sky-600 text-white border-sky-600 hover:bg-sky-700 hover:border-sky-700'
 
 export const ActualTable = ({
     title,
@@ -44,22 +51,23 @@ export const ActualTable = ({
     onExportExcel,
     onRefresh,
     onFilter,
-}: Props) => {
+}: ActualTableProps) => {
     const totalPages = data ? Math.ceil(data.total / PAGE_SIZE) : 1
     const rows = data?.data ?? []
 
     return (
         <div className="w-full h-full flex flex-col bg-slate-100 border border-slate-200 rounded-lg overflow-hidden">
-            {/* Header */}
-            <div className="flex items-center justify-between px-4 pt-2 pb-1 bg-slate-50 border-b">
+            <div className="flex items-center justify-between px-4 pt-2 pb-2 bg-slate-50 border-b">
                 <div className="flex items-center gap-3">
-                    <span className="text-base font-semibold">{title}</span>
-                    <select className="border border-gray-300 rounded px-2 py-1 text-xs bg-white">
+                    <div className="flex flex-col">
+                        <span className="text-base font-semibold">{title}</span>
+                    </div>
+                    <select className="border border-gray-300 rounded px-2 py-1 text-xs bg-white cursor-pointer hover:border-slate-400">
                         <option>Arr/Dep</option>
                     </select>
                     <div className="relative w-64">
                         <input
-                            className="w-full border border-gray-300 rounded-full py-1.5 pl-3 pr-8 text-xs"
+                            className="w-full border border-gray-300 rounded-full py-1.5 pl-3 pr-8 text-xs focus:border-slate-400 focus:ring-1 focus:ring-slate-200 focus:outline-none"
                             placeholder="Search"
                             value={search}
                             onChange={(e) => {
@@ -72,35 +80,25 @@ export const ActualTable = ({
                 </div>
 
                 <div className="flex items-center gap-2 text-xs">
-                    <button
-                        onClick={onSettings}
-                        className="px-3 py-1 border rounded-full bg-white hover:bg-slate-100"
-                    >
-                        ⚙️ Settings
+                    <button onClick={onSettings} className={headerButtonNeutral}>
+                        <span className="mr-1 text-sm">⚙️</span>
+                        <span>Settings</span>
                     </button>
-                    <button
-                        onClick={onAdd}
-                        className="px-3 py-1 border rounded-full bg-blue-600 text-white hover:bg-blue-700"
-                    >
-                        ➕ Add
+                    <button onClick={onAdd} className={headerButtonPrimary}>
+                        <span className="mr-1 text-sm">➕</span>
+                        <span>Add</span>
                     </button>
-                    <button
-                        onClick={onExportExcel}
-                        className="px-3 py-1 border rounded-full bg-white hover:bg-slate-100"
-                    >
-                        ⬇️ Export
+                    <button onClick={onExportExcel} className={headerButtonNeutral}>
+                        <span className="mr-1 text-sm">📥</span>
+                        <span>Export</span>
                     </button>
-                    <button
-                        onClick={onRefresh}
-                        className="px-3 py-1 border rounded-full bg-white hover:bg-slate-100"
-                    >
-                        🔃 Refresh
+                    <button onClick={onRefresh} className={headerButtonNeutral}>
+                        <span className="mr-1 text-sm">🔄</span>
+                        <span>Refresh</span>
                     </button>
-                    <button
-                        onClick={onFilter}
-                        className="px-3 py-1 border rounded-full bg-white hover:bg-slate-100"
-                    >
-                        🔎 Filter
+                    <button onClick={onFilter} className={headerButtonNeutral}>
+                        <span className="mr-1 text-sm">🔎</span>
+                        <span>Filter</span>
                     </button>
                 </div>
             </div>
@@ -111,7 +109,6 @@ export const ActualTable = ({
                 </div>
             )}
 
-            {/* Table */}
             <div className="max-h-[340px] overflow-auto bg-white">
                 <table className="min-w-full text-[11px] whitespace-nowrap">
                     <thead className="sticky top-0 bg-white border-b border-gray-200">
@@ -215,20 +212,20 @@ export const ActualTable = ({
                                         <div className="flex gap-1 justify-end">
                                             <button
                                                 title="Edit"
-                                                className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center text-xs"
+                                                className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center text-xs hover:bg-slate-800 cursor-pointer transition-colors"
                                             >
                                                 ✏️
                                             </button>
                                             <button
                                                 title="More"
-                                                className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center text-xs"
+                                                className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center text-xs hover:bg-slate-800 cursor-pointer transition-colors"
                                             >
                                                 ➕
                                             </button>
                                             <button
                                                 title="Delete"
                                                 onClick={() => onDelete(row.id)}
-                                                className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center text-xs"
+                                                className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center text-xs hover:bg-red-600 cursor-pointer transition-colors"
                                             >
                                                 🗑
                                             </button>
@@ -241,7 +238,6 @@ export const ActualTable = ({
                 </table>
             </div>
 
-            {/* Pagination */}
             <div className="flex items-center justify-between px-4 py-1.5 text-[11px] bg-slate-50 border-t">
                 <span>
                     {data
@@ -255,7 +251,7 @@ export const ActualTable = ({
                     <button
                         onClick={() => setCurrentPage(currentPage > 1 ? currentPage - 1 : 1)}
                         disabled={currentPage === 1}
-                        className="border rounded px-2 py-0.5 bg-white disabled:opacity-40"
+                        className="border rounded px-2 py-0.5 bg-white disabled:opacity-40 cursor-pointer"
                     >
                         {'<'}
                     </button>
@@ -265,12 +261,12 @@ export const ActualTable = ({
                             setCurrentPage(currentPage < totalPages ? currentPage + 1 : totalPages)
                         }
                         disabled={currentPage === totalPages}
-                        className="border rounded px-2 py-0.5 bg-white disabled:opacity-40"
+                        className="border rounded px-2 py-0.5 bg-white disabled:opacity-40 cursor-pointer"
                     >
                         {'>'}
                     </button>
                     <select
-                        className="border rounded px-2 py-0.5 bg-white"
+                        className="border rounded px-2 py-0.5 bg-white cursor-pointer"
                         value={PAGE_SIZE}
                         disabled
                     >
@@ -281,3 +277,5 @@ export const ActualTable = ({
         </div>
     )
 }
+
+export default ActualTable

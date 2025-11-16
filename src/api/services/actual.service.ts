@@ -28,7 +28,6 @@ export const actualService = {
         return apiClient.delete(`/api/v2/Actual/${id}`)
     },
 
-    // این متد را اضافه کن
     exportExcel: (params?: ActualSearchParams): Promise<Blob> => {
         return apiClient.get('/api/v2/Actual/ExportExcel', {
             params,

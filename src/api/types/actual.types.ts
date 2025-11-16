@@ -40,7 +40,7 @@ export interface ActualFlight {
     internalRemark?: string
     visibility?: string
     validity?: string
-    codeSharing?: CodeSharingInfo // two fields
+    codeSharing?: CodeSharingInfo
     scheduled?: string
     flightType?: string
     publicRemark1?: string

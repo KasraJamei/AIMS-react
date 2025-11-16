@@ -3,20 +3,26 @@
 import { useState } from 'react'
 import { useActuals, useDeleteActual } from '../hooks/useActuals'
 import { actualService } from '../api/services/actual.service'
-import { ActualTable } from '../components/flights/ActualTable'
+import ActualTable from '../components/flights/ActualTable'
+import SettingsModal from '../components/flights/SettingsModal'
+import AddFlightModal from '../components/flights/AddFlightModal'
+import AdvancedSearch from '../components/flights/AdvancedSearch'
+import type { AdvancedSearchParams } from '../components/flights/AdvancedSearch'
 import type { ActualSearchParams } from '../api/types/actual.types'
 
 const PAGE_SIZE = 20
 
-const DomesticSection = ({
-    title,
-    baseParams,
-}: {
+type SectionProps = {
     title: string
     baseParams: ActualSearchParams
-}) => {
+}
+
+const DomesticSection = ({ title, baseParams }: SectionProps) => {
     const [search, setSearch] = useState('')
     const [currentPage, setCurrentPage] = useState(1)
+    const [settingsOpen, setSettingsOpen] = useState(false)
+    const [addOpen, setAddOpen] = useState(false)
+    const [filtersOpen, setFiltersOpen] = useState(false)
 
     const params: ActualSearchParams = {
         ...baseParams,
@@ -43,33 +49,56 @@ const DomesticSection = ({
             a.download = `${title}-flights.xlsx`
             a.click()
             URL.revokeObjectURL(url)
-        } catch (e) {
-            console.error('Export excel failed', e)
+        } catch {
             alert('Export excel failed')
         }
     }
 
-    const handleAdd = () => console.log('ADD flight', title)
-    const handleSettings = () => console.log('OPEN settings', title)
-    const handleFilter = () => console.log('OPEN filter', title)
+    const handleAdd = () => setAddOpen(true)
+    const handleSettings = () => setSettingsOpen(true)
+    const handleFilter = () => setFiltersOpen((prev) => !prev)
+
+    const handleAdvancedSearch = ({ startDate, endDate, flightNumber }: AdvancedSearchParams) => {
+        setFiltersOpen(false)
+        console.log('Advanced search applied:', { startDate, endDate, flightNumber })
+    }
 
     return (
-        <ActualTable
-            title={title}
-            search={search}
-            setSearch={setSearch}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-            data={data}
-            isLoading={isLoading}
-            error={error}
-            onDelete={handleDelete}
-            onExportExcel={handleExportExcel}
-            onAdd={handleAdd}
-            onSettings={handleSettings}
-            onFilter={handleFilter}
-            onRefresh={refetch}
-        />
+        <div className="space-y-2">
+            {filtersOpen && (
+                <div className="bg-white border border-slate-200 rounded-lg mb-1">
+                    <AdvancedSearch open={true} onSearch={handleAdvancedSearch} />
+                </div>
+            )}
+
+            <ActualTable
+                title={title}
+                search={search}
+                setSearch={setSearch}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+                data={data}
+                isLoading={isLoading}
+                error={error}
+                onDelete={handleDelete}
+                onExportExcel={handleExportExcel}
+                onAdd={handleAdd}
+                onSettings={handleSettings}
+                onFilter={handleFilter}
+                onRefresh={refetch}
+            />
+
+            <SettingsModal open={settingsOpen} onClose={() => setSettingsOpen(false)} />
+            <AddFlightModal
+                open={addOpen}
+                onClose={() => setAddOpen(false)}
+                directionType={baseParams.directionType === 'Arrival' ? 'Arrival' : 'Departure'}
+                flightCategory={
+                    baseParams.flightCategory === 'International' ? 'International' : 'Domestic'
+                }
+                onSubmit={(data) => console.log('submit new flight', title, data)}
+            />
+        </div>
     )
 }
 
