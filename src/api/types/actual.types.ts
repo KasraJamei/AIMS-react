@@ -1,5 +1,10 @@
 // src/api/types/actual.types.ts
 
+export interface CodeSharingInfo {
+    master?: string
+    flightNo?: string
+}
+
 export interface ActualFlight {
     id: number
     blink?: string
@@ -29,6 +34,18 @@ export interface ActualFlight {
     registration?: string
     parkPosition?: string
     route?: string
+
+    // New fields (after parkPosition)
+    via?: string
+    internalRemark?: string
+    visibility?: string
+    validity?: string
+    codeSharing?: CodeSharingInfo // two fields
+    scheduled?: string
+    flightType?: string
+    publicRemark1?: string
+    publicRemark2?: string
+    rotationFlight?: string
 }
 
 export interface ActualSearchParams {

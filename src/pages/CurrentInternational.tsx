@@ -2,75 +2,88 @@
 
 import { useState } from 'react'
 import { useActuals, useDeleteActual } from '../hooks/useActuals'
-import FlightTable from '../components/flights/FlightTable'
-import type { ActualFlight } from '../api/types/actual.types'
+import { actualService } from '../api/services/actual.service'
+import { ActualTable } from '../components/flights/ActualTable'
+import type { ActualSearchParams } from '../api/types/actual.types'
 
-const CurrentInternational = () => {
-    const [searchText] = useState('')
-    const [directionType] = useState<'Arrival' | 'Departure'>('Arrival')
+const PAGE_SIZE = 20
+
+const InternationalSection = ({
+    title,
+    baseParams,
+}: {
+    title: string
+    baseParams: ActualSearchParams
+}) => {
+    const [search, setSearch] = useState('')
     const [currentPage, setCurrentPage] = useState(1)
-    const pageSize = 20
 
-    const { data, isLoading, error } = useActuals({
-        flightCategory: 'International',
-        directionType,
-        searchText: searchText || undefined,
-        skip: (currentPage - 1) * pageSize,
-        take: pageSize,
-    })
+    const params: ActualSearchParams = {
+        ...baseParams,
+        searchText: search || undefined,
+        skip: (currentPage - 1) * PAGE_SIZE,
+        take: PAGE_SIZE,
+    }
 
+    const { data, isLoading, error, refetch } = useActuals(params)
     const deleteMutation = useDeleteActual()
 
-    const handleDelete = async (id: number) => {
+    const handleDelete = (id: number) => {
         if (confirm('Are you sure you want to delete this flight?')) {
-            await deleteMutation.mutateAsync(id)
+            deleteMutation.mutateAsync(id).then(() => refetch())
         }
     }
 
-    const handleEdit = (flight: ActualFlight) => {
-        console.log('Edit flight', flight)
+    const handleExportExcel = async () => {
+        try {
+            const blob = await actualService.exportExcel(params)
+            const url = URL.createObjectURL(blob)
+            const a = document.createElement('a')
+            a.href = url
+            a.download = `${title}-flights.xlsx`
+            a.click()
+            URL.revokeObjectURL(url)
+        } catch (e) {
+            console.error('Export excel failed', e)
+            alert('Export excel failed')
+        }
     }
 
-    const totalPages = data?.total ? Math.ceil(data.total / pageSize) : 1
+    const handleAdd = () => console.log('ADD flight', title)
+    const handleSettings = () => console.log('OPEN settings', title)
+    const handleFilter = () => console.log('OPEN filter', title)
 
     return (
-        <div className="p-6 space-y-6">
-            <div className="flex items-center justify_between">
-                <h1 className="text-2xl font-bold text-gray-900">International Flights</h1>
-            </div>
+        <ActualTable
+            title={title}
+            search={search}
+            setSearch={setSearch}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            data={data}
+            isLoading={isLoading}
+            error={error}
+            onDelete={handleDelete}
+            onExportExcel={handleExportExcel}
+            onAdd={handleAdd}
+            onSettings={handleSettings}
+            onFilter={handleFilter}
+            onRefresh={refetch}
+        />
+    )
+}
 
-            {error && (
-                <div className="bg-red-50 text-red-700 p-4 rounded-lg">
-                    Error loading flights: {error.message}
-                </div>
-            )}
-
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-                <FlightTable
-                    flights={data?.data || []}
-                    isLoading={isLoading}
-                    onEdit={handleEdit}
-                    onDelete={handleDelete}
-                />
-            </div>
-
-            {data && totalPages > 1 && (
-                <div className="flex items-center justify-between mt-4">
-                    <button
-                        onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                        disabled={currentPage === 1}
-                    >
-                        Prev
-                    </button>
-                    <span>Page {currentPage} of {totalPages}</span>
-                    <button
-                        onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-                        disabled={currentPage === totalPages}
-                    >
-                        Next
-                    </button>
-                </div>
-            )}
+const CurrentInternational = () => {
+    return (
+        <div className="p-3 space-y-4">
+            <InternationalSection
+                title="International - Arrival"
+                baseParams={{ flightCategory: 'International', directionType: 'Arrival' }}
+            />
+            <InternationalSection
+                title="International - Departure"
+                baseParams={{ flightCategory: 'International', directionType: 'Departure' }}
+            />
         </div>
     )
 }

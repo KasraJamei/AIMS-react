@@ -1,3 +1,5 @@
+// src/api/client.ts
+
 import axios, { type AxiosResponse } from 'axios'
 import { authService } from './services/auth.service'
 
@@ -19,19 +21,14 @@ apiClient.interceptors.request.use(
         }
         return config
     },
-    (error) => {
-        return Promise.reject(error)
-    }
+    (error) => Promise.reject(error),
 )
 
 apiClient.interceptors.response.use(
     (response: AxiosResponse) => response.data,
     (error) => {
-        if (error.response?.status === 401) {
-            authService.logout()
-            window.location.href = '/login'
-        }
-        const message = error.response?.data?.message || error.message || 'Unknown error'
-        return Promise.reject(new Error(message))
-    }
+        // برای دیباگ ببینیم چرا 404/401 می‌گیری
+        console.error('API error:', error.response?.status, error.response?.data)
+        return Promise.reject(error)
+    },
 )
