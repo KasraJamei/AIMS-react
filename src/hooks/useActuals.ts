@@ -2,44 +2,42 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { actualService } from '../api/services/actual.service'
-import type { ActualSearchParams, ActualFlight } from '../api/types/actual.types'
+import type { ActualFlight, ActualSearchParams, ActualResponse } from '../api/types/actual.types'
 
 export const useActuals = (params?: ActualSearchParams) => {
-    return useQuery({
-        queryKey: ['actuals', params],
-        queryFn: () => actualService.getAll(params),
-        refetchInterval: 1000 * 30,
-        staleTime: 1000 * 20,
-    })
+  return useQuery<ActualResponse, Error>({
+    queryKey: ['actuals', params],
+    queryFn: () => actualService.getAll(params),
+  })
 }
 
 export const useActual = (id: number) => {
-    return useQuery({
-        queryKey: ['actual', id],
-        queryFn: () => actualService.getById(id),
-        enabled: !!id,
-    })
+  return useQuery<ActualFlight, Error>({
+    queryKey: ['actual', id],
+    queryFn: () => actualService.getById(id),
+    enabled: id != null,
+  })
 }
 
 export const useDeleteActual = () => {
-    const queryClient = useQueryClient()
+  const queryClient = useQueryClient()
 
-    return useMutation({
-        mutationFn: actualService.delete,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['actuals'] })
-        },
-    })
+  return useMutation<void, Error, number>({
+    mutationFn: (id: number) => actualService.delete(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['actuals'] })
+    },
+  })
 }
 
 export const useUpdateActual = () => {
-    const queryClient = useQueryClient()
+  const queryClient = useQueryClient()
 
-    return useMutation({
-        mutationFn: actualService.update,
-        onSuccess: (data: ActualFlight) => {
-            queryClient.invalidateQueries({ queryKey: ['actuals'] })
-            queryClient.invalidateQueries({ queryKey: ['actual', data.id] })
-        },
-    })
+  return useMutation<ActualFlight, Error, ActualFlight>({
+    mutationFn: (data: ActualFlight) => actualService.update(data),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['actuals'] })
+      queryClient.invalidateQueries({ queryKey: ['actual', data.id] })
+    },
+  })
 }
